@@ -1,0 +1,23 @@
+{
+  "name": "abcd",
+  "version": "1.0.0",
+  "description": "",
+  "main": "userLogin.js",
+  "scripts": {
+    "start": "node userLogin.js",
+    "test": "jest"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "mysql2": "^3.6.5"
+  },
+  "devDependencies": {
+    "chai": "^4.3.10",
+    "jest": "^29.7.0",
+    "mocha": "^10.2.0",
+    "node-fetch": "^3.3.2"
+  }
+}
