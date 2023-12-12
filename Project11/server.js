@@ -35,11 +35,11 @@ app.get('/', (req, res) => {
 
 
 const pool = mysql.createPool({
-  host: 'localhost',  
-  user: 'root',
-  password: 'root',
+  host: 'nbad-final-project-do-user-15356468-0.c.db.ondigitalocean.com',  
+  user: 'doadmin',
+  password: 'AVNS_1wmotfkkCcPJnZEZ_zm',
   database: 'project',
-  port: 3306,
+  port: 25060,
 });
 
 
@@ -56,7 +56,7 @@ app.post('/signupUser', (req, res) => {
     }
 
     // Insert into Customers table
-    const queryCustomers = `INSERT INTO users (UserName, FirstName, LastName, Phone, Email) 
+    const queryCustomers = `INSERT INTO Users (UserName, FirstName, LastName, Phone, Email) 
                             VALUES (?, ?, ?, ?, ?)`;
     connection.query(queryCustomers, [username, firstName, lastName, phone, email], (err, results) => {
       if (err) {
@@ -88,7 +88,7 @@ app.post('/signupUser', (req, res) => {
 
 app.post('/loginuser', (req, res) => {
     const { username, password } = req.body;
-
+    debugger;
     // Perform a database query to check the user's credentials
     pool.getConnection((err, connection) => {
         if (err) {
