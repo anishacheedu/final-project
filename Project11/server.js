@@ -69,7 +69,7 @@ app.post('/signupUser', (req, res) => {
       const UserID = results.insertId;
 
       // Insert into Users table
-      const queryUsers = `INSERT INTO userauth (UserID, UserName, Password) VALUES (?, ?, ?)`;
+      const queryUsers = `INSERT INTO UserAuth (UserID, UserName, Password) VALUES (?, ?, ?)`;
       connection.query(queryUsers, [UserID, username, password], (err) => {
         if (err) {
           console.error('Error inserting into users table:', err);
@@ -97,7 +97,7 @@ app.post('/loginuser', (req, res) => {
             return;
         }
         
-        const query = 'SELECT UserID FROM userauth WHERE UserName = ? AND Password = ?';
+        const query = 'SELECT UserID FROM UserAuth WHERE UserName = ? AND Password = ?';
 
         connection.query(query, [username, password], (err, results) => {
 
@@ -132,7 +132,7 @@ app.post('/addToUsersessions', (req, res) => {
     // generateRandomNumber(1000, 9999); // Generate a random 4-digit number
 
     // Assuming the UserSessions table has columns: CustomerID, currTransactionID
-    const sql = 'INSERT INTO sessions (UserID, SessionID) VALUES (?, ?)';
+    const sql = 'INSERT INTO Sessions (UserID, SessionID) VALUES (?, ?)';
 
     pool.getConnection((err, connection) => {
         if (err) {
@@ -168,7 +168,7 @@ app.get('/api/currentUserLoginID', (req, res) => {
             return;
         }
 
-        const query = 'SELECT UserID,SessionID FROM sessions LIMIT 1';
+        const query = 'SELECT UserID,SessionID FROM Sessions LIMIT 1';
 
         connection.query(query, (error, results) => {
             connection.release();
@@ -203,7 +203,7 @@ app.post('/submitBudget', (req, res) => {
 
     const transStatus = category; // assuming TransStatus is equivalent to the category
 
-    const insertQuery = 'INSERT INTO budgettrans (UserID, Amount, ForWhat, TransDate, TransStatus, InsertionDateTime) VALUES (?, ?, ?, ?, ?, ?)';
+    const insertQuery = 'INSERT INTO BudgetTrans (UserID, Amount, ForWhat, TransDate, TransStatus, InsertionDateTime) VALUES (?, ?, ?, ?, ?, ?)';
     
     // Get the current timestamp
     const currentTimestamp = new Date();
@@ -275,8 +275,8 @@ app.get('/getTotalBudget/:userId', (req, res) => {
     }
 
     // Replace the following lines with your actual database logic
-    const getTotalIncomeQuery = 'SELECT SUM(Amount) AS totalIncome FROM budgettrans WHERE UserID = ? AND TransStatus = "income"';
-    const getTotalExpenseQuery = 'SELECT SUM(Amount) AS totalExpense FROM budgettrans WHERE UserID = ? AND TransStatus = "expense"';
+    const getTotalIncomeQuery = 'SELECT SUM(Amount) AS totalIncome FROM BudgetTrans WHERE UserID = ? AND TransStatus = \'income\'';
+    const getTotalExpenseQuery = 'SELECT SUM(Amount) AS totalExpense FROM BudgetTrans WHERE UserID = ? AND TransStatus = \'expense\'';
 
     // Execute the queries
     connection.query(getTotalIncomeQuery, [userId], (error, incomeResults) => {
@@ -362,7 +362,7 @@ app.get('/getMonthlyIncomeAndExpenses/:userId', (req, res) => {
 
 app.get('/budgetTranshistory/:userId', (req, res) => {
   const userId = req.params.userId;
-  const query = `SELECT * FROM budgettrans WHERE UserID = ? ORDER BY InsertionDateTime`;
+  const query = `SELECT * FROM BudgetTrans WHERE UserID = ? ORDER BY InsertionDateTime`;
 
   // Get a connection from the pool
   pool.getConnection((err, connection) => {
@@ -399,7 +399,7 @@ app.post('/remove-session', (req, res) => {
       return;
     }
 
-    connection.query('DELETE FROM sessions WHERE UserID = ?', [userId], (err, result) => {
+    connection.query('DELETE FROM Sessions WHERE UserID = ?', [userId], (err, result) => {
       connection.release(); // Release the connection back to the pool
 
       if (err) {
@@ -465,7 +465,7 @@ app.post('/api/saveRecord', (req, res) => {
     }
 
     connection.query(
-      'UPDATE budgettrans SET Amount = ? WHERE UserID = ? AND ForWhat = ?',
+      'UPDATE BudgetTrans SET Amount = ? WHERE UserID = ? AND ForWhat = ?',
       [parseFloat(amount), userID, forWhat],
       (error, results) => {
         connection.release(); // release the connection back to the pool
@@ -492,7 +492,7 @@ app.delete('/api/deleteRecord', (req, res) => {
     }
 
     connection.query(
-      'DELETE FROM budgettrans WHERE UserID = ? AND ForWhat = ?',
+      'DELETE FROM BudgetTrans WHERE UserID = ? AND ForWhat = ?',
       [userID, forWhat],
       (error, results) => {
         connection.release(); // release the connection back to the pool
