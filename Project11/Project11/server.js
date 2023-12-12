@@ -275,8 +275,8 @@ app.get('/getTotalBudget/:userId', (req, res) => {
     }
 
     // Replace the following lines with your actual database logic
-    const getTotalIncomeQuery = 'SELECT SUM(Amount) AS totalIncome FROM BudgetTrans WHERE UserID = ? AND TransStatus = "income"';
-    const getTotalExpenseQuery = 'SELECT SUM(Amount) AS totalExpense FROM BudgetTrans WHERE UserID = ? AND TransStatus = "expense"';
+    const getTotalIncomeQuery = 'SELECT SUM(Amount) AS totalIncome FROM BudgetTrans WHERE UserID = ? AND TransStatus = \'income\'';
+    const getTotalExpenseQuery = 'SELECT SUM(Amount) AS totalExpense FROM BudgetTrans WHERE UserID = ? AND TransStatus = \'expense\'';
 
     // Execute the queries
     connection.query(getTotalIncomeQuery, [userId], (error, incomeResults) => {
